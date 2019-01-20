@@ -63,15 +63,6 @@ fun! autocd_main#autocd()
   if l:dir == 0
 
     call s:SwitchDir(l:dir)
-    if exists('g:loaded_nerd_tree') && g:loaded_nerd_tree == 1 && 
-\       exists('g:autocd#sync_nerdtree') && g:autocd#sync_nerdtree == 1 
-      
-      execute('NERDTreeCWD')
-      if g:autocd#nerdtree_close
-        execute('NERDTreeClose')
-      endif
-
-    endif
   endif
   
 endfun
