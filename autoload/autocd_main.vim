@@ -7,6 +7,7 @@
 
 scriptencoding utf-8
 
+" Upward search for specified marker
 fun! autocd_main#searchmarker(dir) 
   " Make sure dictionary is initialized
   if !exists("g:autocd#project_markers['default']")
@@ -18,10 +19,12 @@ fun! autocd_main#searchmarker(dir)
 \    g:autocd#project_markers[&filetype] : g:autocd#project_markers['default']
   
   let l:dir = s:has_suffix(a:dir, l:marks) 
-  if l:dir != 0 && g:autocd#project_markers['default'][0] =~# '^disabled$' 
-    return 1
-  else
-    let l:dir = s:has_suffix(a:dir, g:autocd#project_markers['default'])
+  if l:dir != 0 
+    if g:autocd#project_markers['default'][0] =~# '^disabled$' 
+      return 1
+    else
+      let l:dir = s:has_suffix(a:dir, g:autocd#project_markers['default'])
+    endif
   endif 
   
   if l:dir == 0
@@ -50,6 +53,7 @@ fun! s:has_suffix(dir, marks)
   return 1
 endfun
 
+" Switch directory or tab directory as appropriate
 fun! s:SwitchDir(dir)
   if tabpagenr('$') == 1
     execute('cd ' . a:dir)
