@@ -2,6 +2,8 @@
 " Vim autocd plugin
 " ####################################################################################################
 
+scriptencoding utf-8
+
 if !exists('g:autocd#nerdtree_close')
   let g:autocd#nerdtree_close = 0
 endif

@@ -38,8 +38,9 @@ endfun
 fun! s:has_suffix(dir, marks)
   let l:fmod = ':h'
   let l:dir = a:dir
+  let l:depthCounter = exists('g:autocd#max_depth') ? g:autocd#max_depth : -1
   " return true if when appended to the current path a marker in g:autocd#project_markers is valid
-  while l:dir !~# '^.$'
+  while l:dir !~# '^.$' && l:depthCounter != 0
 
     for marker in a:marks
       if(!empty(glob(l:dir . '/' . marker)))
@@ -48,6 +49,7 @@ fun! s:has_suffix(dir, marks)
     endfor
 
     let l:dir = fnamemodify(l:dir, l:fmod) 
+    let l:depthCounter -= 1
   endwhile
 
   return 1
