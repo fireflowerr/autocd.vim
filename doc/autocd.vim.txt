@@ -1,0 +1,41 @@
+*autocd.vim.txt*
+                                                                  *autocd.vim*
+
+==============================================================================
+CONTENTS                                                 *autocd.vim-contents*
+  1. Commands............................................|autocd.vim-commands|
+  2. Configuration.......................................|autocd.vim-config|
+
+==============================================================================
+COMMANDS                                                 *autocd.vim-commands*
+
+:Autocd                                                              *:Autocd*
+  Starts a recursive upward search from the current file to a marker in the
+  dictionary of the current file or default if none is provided. If there is a
+  single tab change the cd to the result of the search, otherwise change the
+  lcd to the result of the search.
+
+==============================================================================
+CONFIGURATION                                              *autocd.vim-config*
+
+g:autocd#project_markers                        *g:autocd#project_markers*
+
+Dictionary where filetype is the key value, and the definition is a list of 
+folder and file names to search for in the upward heiarchy relative to the
+current file. This search can be limited by 'g:autocd#max_depth'. Example: >
+
+    let g:autocd#project_markers = {
+    " setting default to '' causes %:p:h to be used on search failure
+    \   'default': [''], // 
+    \   'java': ['pom.xml'],
+    \   'vim': ['plugin']
+    \}
+
+g:loaded_nerd_tree                                    *g:loaded_nerd_tree* 
+
+If true call NERDTreeCWD after this plugin changes a directory.
+
+g:autocd#max_depth                                    *g:autocd#max_depth*
+
+The amount of directories to traverse upward before halt. If unset default to
+root.

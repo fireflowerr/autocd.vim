@@ -4,13 +4,13 @@
 
 scriptencoding utf-8
 
-if !exists('g:autocd#nerdtree_close')
-  let g:autocd#nerdtree_close = 0
-endif
+""
+" @section Commands, commands
 
-fun! Autocd()
+" This wrapper is required to make NerdTree sync work
+fun! s:Autocd()
   let l:open = g:NERDTree.IsOpen()
-  call autocd_main#autocd()
+ call autocd_main#autocd()
 
   if exists('g:loaded_nerd_tree') && g:loaded_nerd_tree == 1 && 
 \       exists('g:autocd#sync_nerdtree') && g:autocd#sync_nerdtree == 1 
@@ -23,4 +23,9 @@ fun! Autocd()
   endif
 endfun
 
-command! Autocd call Autocd()
+""
+" Starts a recursive upward search from the current file to a marker in the dictionary of the
+" current file or default if none is provided. If there is a single tab change the cd to the result
+" of the search, otherwise change the lcd to the result of the search.
+command! Autocd call s:Autocd()
+

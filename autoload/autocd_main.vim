@@ -64,6 +64,7 @@ fun! s:SwitchDir(dir)
   endif
 endfun
 
+" Entry point
 fun! autocd_main#autocd()
   let l:dir = autocd_main#searchmarker(expand('%:p:h'))
   if l:dir == 0
