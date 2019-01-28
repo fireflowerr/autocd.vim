@@ -20,6 +20,7 @@ call dein#add('paroxayte/autocd.vim')
 ```
 
 ## Configuration
+*Below are some configuration examples. For a full list of configuration options see `:help autocd.vim-configuration`*
 
 ### Markers
 Autocd works by processing various triggers each associated with a mark. When a trigger goes off,
@@ -81,7 +82,7 @@ let g:autocd#markers_path = {
 \}
 ```
 
-### More Information 
+## More Information 
 For more information see `:help autocd.vim`
 
 ### Self Promotion
