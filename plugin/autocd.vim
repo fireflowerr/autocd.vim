@@ -15,7 +15,7 @@ endif
 
 if exists('g:autocd#autocmd_enable') && g:autocd#autocmd_enable
   augroup Autocd 
-    autocmd BufEnter * if bufname('%') !~# 'NERD_tree' |
+    autocmd VimEnter,BufEnter * if bufname('%') !~# 'NERD_tree' |
 \    execute('Autocd') |
 \   endif  
   augroup END
