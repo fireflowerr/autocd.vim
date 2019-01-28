@@ -68,6 +68,19 @@ this feature post startup.
 ### Commands & Autocommands
 The sole command of Autocd is `:Autocd`. To run `:Autocd` automatically on BufEnter `g:autocd#autocmd_enable = 1` must be set on startup.
 
+### Example Configuration
+```vim
+let g:autocd#nts_enable = 1
+let g:autocd#autocmd_enable = 1
+let g:autocd#markers_default = 1
+let g:autocd#markers_filetype = {
+\   'java': ['pom.xml']
+\}
+let g:autocd#markers_path = { 
+\   'user_name/Dev': ['.project', '.vscode']
+\}
+```
+
 ### More Information 
 For more information see `:help Autocd`
 
