@@ -82,7 +82,7 @@ let g:autocd#markers_path = {
 ```
 
 ### More Information 
-For more information see `:help Autocd`
+For more information see `:help autocd.vim`
 
 ### Self Promotion
 If this plugin is useful, give the repo a star!
