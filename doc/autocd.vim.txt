@@ -4,8 +4,8 @@
 ==============================================================================
 CONTENTS                                                 *autocd.vim-contents*
   1. Commands............................................|autocd.vim-commands|
-  2. Configuration.......................................|autocd.vim-config|
-
+  2. Configuration..................................|autocd.vim-configuration|
+  3. Functions..........................................|autocd.vim-functions|
 ==============================================================================
 COMMANDS                                                 *autocd.vim-commands*
 
@@ -16,26 +16,67 @@ COMMANDS                                                 *autocd.vim-commands*
   lcd to the result of the search.
 
 ==============================================================================
-CONFIGURATION                                              *autocd.vim-config*
+CONFIGURATION                                       *autocd.vim-configuration*
 
-g:autocd#project_markers                        *g:autocd#project_markers*
+g:autocd#markers_filetype                          *g:autocd#markers_filetype* 
+  A dictionary where the keys are a filetype corresponding to a set of markers
+  to search for.  >
+  
+    let g:autocd#markers_filetype = { 'java' : ['pom.xml] }
 
-Dictionary where filetype is the key value, and the definition is a list of 
-folder and file names to search for in the upward heiarchy relative to the
-current file. This search can be limited by 'g:autocd#max_depth'. Example: >
+g:autocd#markers_path                                  *g:autocd#markers_path*                    
+  A dictionary where the keys are a subpath to be matched agains the current
+  file path. The values are a corresponding set of markers to search for.
+  For instance if both VSC and Eclipse are installed, and both set to use  
+  a folder within /home/user/Dev for their workspaces. The following value
+  will cause Autocd to set the cwd to workspace root if you open a file in 
+  any of either Eclipse or VSC's workspaces. >
 
-    let g:autocd#project_markers = {
-    " setting default to '' causes %:p:h to be used on search failure
-    \   'default': [''], // 
-    \   'java': ['pom.xml'],
-    \   'vim': ['plugin']
+    let g:autocd#markers_path = { 
+    \ 'user/Dev': ['.vscode', '.project']
     \}
 
-g:loaded_nerd_tree                                    *g:loaded_nerd_tree* 
+g:autocd#markers_filetype_first              *g:autocd#markers_filetype_first*
+  Default value 1. If disabled (set to 0) Autocd will search 
+  |g:autocd#markers_path| before searching |g:autocd#markers_path|.
 
-If true call NERDTreeCWD after this plugin changes a directory.
+g:autocd#markers_default                            *g:autocd#markers_default*
+  Default value 0. If enabled (set to 1) Autocd will change the directory to 
+  the output of |g:autocd#makers_get_default()|.
 
-g:autocd#max_depth                                    *g:autocd#max_depth*
+g:autocd#makers_get_default()                    *g:autocd#makers_get_default()*
+  The output of this function will be used as the new cwd if file and path search 
+  fail and |g:autocd#markers_default| is enabled. Default definition has the
+  same behavior as autochdir. Default value: >
 
-The amount of directories to traverse upward before halt. If unset default to
-root.
+    fun! g:autocd#makers_get_default()
+      return expand('%:p:h')
+    endfun
+
+g:autocd#max_depth                                        *g:autocd#max_depth*
+  Default value -1. If set to a positive integer, the search will halt after
+  traversing up g:autocd#max_depth directories. If the value is < 0, the
+  search will halt only when a match if found, or root has been reached.
+
+g:autocd#tab_isolation                                *g:autocd#tab_isolation*
+  Default value 1. If true and more than 1 tab is opened, each tab will have 
+  it's own cwd (set via lcd) as a result of running Autocd.
+
+g:autocd#nts_enable                                      *g:autocd#nts_enable*
+  Default value 0. Must be set at startup. If true and NERDTree is loaded,
+  sync NERDTree root with the directory assigned. To toggle this
+  functionality after startup use |autocd#nts_enable()| or 
+  |autocd#nts_disable()|.
+
+g:autocd#autocmd_enable                              *g:autocd#autocmd_enable*
+  Default value 0. This option must be enabled at startup to activate. When 
+  active, run Autocd automatically on BufEnter. 
+
+==============================================================================
+FUNCTIONS                                               *autocd.vim-functions*
+
+autocd#nts_enable()                                      *autocd#nts_enable()*
+  Calling this function enables NerdTree synchronization. 
+
+autocd#nts_disable()                                    *autocd#nts_disable()*
+  Calling this function disables NerdTree synchronization. 
