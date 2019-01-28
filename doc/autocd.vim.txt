@@ -72,6 +72,14 @@ g:autocd#autocmd_enable                              *g:autocd#autocmd_enable*
   Default value 0. This option must be enabled at startup to activate. When 
   active, run Autocd automatically on BufEnter. 
 
+g:autocd#generate_log                                  *g:autocd#generate_log*
+  Default value 0. When enabled generate a log descriptive log file located
+  at |g:autocd#log_path|
+
+g:autocd#log_path                                          *g:autocd#log_path*
+  Default value $HOME. This value controls the path of the log output when 
+  |g:autocd#generate_log| is enabled.
+
 ==============================================================================
 FUNCTIONS                                               *autocd.vim-functions*
 

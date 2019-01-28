@@ -5,14 +5,15 @@
 scriptencoding utf-8
 
 " INIT
+call autocd#clear_log()
+
 if exists('g:autocd#nts_enable') && g:autocd#nts_enable
   execute('NERDTree | NERDTreeClose')
   call autocd#nts_enable()
 else
   let g:autocd#nts_enable = 0
   call autocd#nts_disable()
-endif
-
+endif 
 if exists('g:autocd#autocmd_enable') && g:autocd#autocmd_enable
   augroup Autocd 
     autocmd VimEnter,BufEnter * if bufname('%') !~# 'NERD_tree' |
@@ -53,16 +54,15 @@ if !exists('g:autocd#tab_isolation')
   let g:autocd#tab_isolation = 1
 endif
 
-""
-" @section Commands, commands
+if !exists('g:autocd#generate_log')
+  let g:autocd#generate_log = 0
+endif
 
-" This wrapper is required to make NerdTree sync work
-fun! s:Autocd()
-  call autocd#autocd(expand('%:p'))
-endfun
-
+if !exists('g:autocd#log_path')
+  let g:autocd#log_path = $HOME
+endif
 ""
 " Starts a recursive upward search from the current file to a marker in the dictionary of the
 " current file or default if none is provided. If there is a single tab change the cd to the result
 " of the search, otherwise change the lcd to the result of the search.
-command! Autocd call s:Autocd()
+command! Autocd call autocd#autocd(expand('%:p'))
