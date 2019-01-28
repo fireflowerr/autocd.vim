@@ -87,8 +87,8 @@ fun! s:search_marker_set(dir, markers)
   while l:dir !~# '^.$' && l:depthCounter != 0
 
     for marker in a:markers
-      if(!empty(glob(l:dir . '/' . marker)))
-        return l:dir    
+      if(!empty(glob(l:dir . '/' . marker, 1)))
+        return l:dir
       endif
     endfor
 
