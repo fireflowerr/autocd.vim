@@ -85,5 +85,8 @@ let g:autocd#markers_path = {
 ## More Information 
 For more information see `:help autocd.vim`
 
+## Issues
+See [contributing](.github/CONTRIBUTING.md).
+
 ### Self Promotion
 If this plugin is useful, give the repo a star!
