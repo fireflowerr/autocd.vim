@@ -55,7 +55,7 @@ If search for markers fail, a default action can be preformed. To enable this
 `g:autocd#markers_default = 1` must be set. By default, the behavior is the same as autochdir,
 switching to the current file's containing directory. To modify this behavior
 `g:autocd#makers_get_default()` may be overridden. The function is expected to return a string
-representing the desired directory, or 1 to represent failure. For more information see `:help g:autocd#makers_get_default()`
+representing the desired directory, or a integer to represent failure. For more information see `:help g:autocd#makers_get_default()`
 
 ### NERDTree Sync
 To enable NERDTree synchronization `g:autocd#nts_enable = 1` must be set at startup. Alternatively
