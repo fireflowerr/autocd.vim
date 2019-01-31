@@ -5,6 +5,17 @@
 scriptencoding utf-8
 " nt_isopen, nt_isloaded, dir
 fun! autocd#autocd(dir)
+  call s:clear_log()
+  if !s:buf_listed()
+    return 1
+  endif
+
+  for ignore in g:autocd#ignore
+    if a:dir =~# ignore
+      return 1
+    endif
+  endfor
+
   let l:target_dir = s:search_markers(a:dir)
 
   let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
@@ -14,6 +25,7 @@ fun! autocd#autocd(dir)
     call s:switch_dir(l:target_dir)
     if s:nts
       call s:NERDTree_sync() 
+
     endif 
   endif
   
@@ -25,13 +37,8 @@ endfun
 
 " Abstracted search for autocd. 
 fun! s:search_markers(dir)
-  let l:target_dir = g:autocd#markers_filetype_first ? s:get_ft_val(a:dir) : s:get_path_val(a:dir)
-  let s:log = s:log . 'get_ft_val(): ' . l:target_dir . "\n"
-  
-  if l:target_dir 
-    let l:target_dir = g:autocd#markers_filetype_first ? s:get_path_val(a:dir) : s:get_ft_val(a:dir)
-    let s:log = s:log . 'get_path_val(): ' . l:target_dir . "\n"
-  endif
+  let l:target_dir = s:get_path_val(a:dir)
+  let s:log = s:log . 'get_path_val(): ' . l:target_dir . "\n"
 
   if l:target_dir && g:autocd#markers_default 
     let l:target_dir = g:autocd#makers_get_default()
@@ -41,45 +48,43 @@ fun! s:search_markers(dir)
   return l:target_dir
 endfun
 
-" Returns the result of ft path cd search
-fun! s:get_ft_val(dir)
-  let l:dir = exists("g:autocd#markers_filetype['" . &filetype . "']")  ?
-\     s:search_marker_set(a:dir, g:autocd#markers_filetype[&filetype])  : 1
-
-  if !l:dir  
-    return l:dir
-  else
-    return 1
-  endif
-
-endfun
-
 " Returns the direcotry of a path cd search
 fun! s:get_path_val(dir)
-  let l:dir = a:dir
-  let l:dir_key = s:get_path_key(a:dir)
-  let s:log = s:log . 'dir_key: ' . l:dir_key . "\n"
+  
+  let l:skip = 0
+  let l:num_keys = len(g:autocd#markers)
 
-  if !l:dir_key 
-    let l:dir = s:search_marker_set(a:dir, g:autocd#markers_path[l:dir_key])  
-    if !l:dir  
+  while l:skip < l:num_keys
+
+    let l:dir_key = s:get_path_key(a:dir, l:skip)
+    let s:log = s:log . 'dir_key: ' . l:dir_key . "\n"
+    if l:dir_key 
+        return 1
+    endif
+
+    let l:dir = s:search_marker_set(a:dir, g:autocd#markers[l:dir_key])  
+    if !l:dir
       return l:dir
     endif
-  endif
+    let l:skip += 1
+  endwhile
+
 
   return 1
 endfun
 
-" Returns the first matching subpath of the dir and the g:autocd#markers_path list
-fun! s:get_path_key(dir)
-  let l:dir = a:dir
-  let l:sorted = sort(keys(g:autocd#markers_path), 's:path_comparator')
+" Returns the first matching subpath of the dir and the g:autocd#markers list
+fun! s:get_path_key(dir, skip)
+  let l:sorted = sort(keys(g:autocd#markers), 's:path_comparator')
+  let l:skip_cnt = 0
 
   for path in l:sorted
-    if fnameescape(l:dir) =~# path
+    if l:skip_cnt < a:skip
+      continue
+    endif
+    if fnameescape(a:dir) =~# glob2regpat(path)
       return path
     endif
-  continue
   endfor
 
   return 1
@@ -143,6 +148,7 @@ endfun
 
 " Enable NERDTree sync
 fun! autocd#nts_enable()
+  call s:clear_log()
   if exists('g:NERDTree')
     let s:cwd = ''  
     let s:nts = 1
@@ -157,6 +163,27 @@ fun! autocd#nts_disable()
   let s:nts = 0
 endfun
 
-fun! autocd#clear_log()
+fun! s:clear_log()
   let s:log = ''
+endfun
+
+fun! s:buf_listed()
+  let bufnr = bufnr('')
+  let l:buf_list = split(execute('ls!'), "\n", 0)
+  let l:i = 0
+
+  for buf in l:buf_list
+    let l:buf_list[i] = substitute(l:buf_list[i], '^\S*\s*\(\S*\).*', '\1', 1)
+    let l:i += 1
+  endfor
+
+  for buf in l:buf_list
+    if buf =~# '^' . bufnr . '\D*'
+      if buf =~ 'u'
+        return 0
+      endif
+    endif
+  endfor
+
+  return 1
 endfun

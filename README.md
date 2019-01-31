@@ -29,28 +29,24 @@ java project with maven there will be a pom.xml in the project root. To automati
 root of a maven java project with :Autocd 
 
 ```vim
-let g:autocd#markers_filetype = {
-\  'java': ['pom.xml']
+let g:autocd#markers = {
+\  '*.java': ['pom.xml']
 \}
 ```
-*g:autocd#markers_filetype is a dictionary with keys corresponding to filetypes, and values
-corresponding to search markers. For more information see `:help g:autocd#markers_filetype`*
 
-In addition a filetype lookup, Autocd also provides a subpath lookup. If Eclipse and VScode
-workspaces are both containted in a parent directory /user/Dev then the following configuration will
-automatically sync the cwd with the project root. 
+To automatically cd to project root of vscode, eclipse, or git projects.
 
 ```vim
-let g:autocd#markers_path = { 
-\   'user/Dev': ['.project', '.vscode'],
+let g:autocd#markers = { 
+\   '*user/Dev*': ['.project', '.vscode', '.git']
 \}
 ```
- To create special rules for a specific file, the file's full path can be used with
- `g:autocd#markers_path`.
+To create special rules for a specific file, the file's full path can be used with 
+`g:autocd#markers`.
 
 ```vim
-let g:autocd#markers_path = { 
-\   '/path/to/file': ['some_marker'],
+let g:autocd#markers = { 
+\   '/path/to/file': ['some_marker']
 \}
 ```
 
@@ -74,11 +70,9 @@ The sole command of Autocd is `:Autocd`. To run `:Autocd` automatically on BufEn
 let g:autocd#nts_enable = 1
 let g:autocd#autocmd_enable = 1
 let g:autocd#markers_default = 1
-let g:autocd#markers_filetype = {
-\   'java': ['pom.xml']
-\}
-let g:autocd#markers_path = { 
-\   'user_name/Dev': ['.project', '.vscode']
+let g:autocd#markers = { 
+\   '*.java' : ['pom.xml'],
+\   '*/user/Dev/*': ['.project', '.vscode', '.git'],
 \}
 ```
 

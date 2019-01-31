@@ -5,8 +5,6 @@
 scriptencoding utf-8
 
 " INIT
-call autocd#clear_log()
-
 if exists('g:autocd#nts_enable') && g:autocd#nts_enable
   execute('NERDTree | NERDTreeClose')
   call autocd#nts_enable()
@@ -16,16 +14,10 @@ else
 endif 
 if exists('g:autocd#autocmd_enable') && g:autocd#autocmd_enable
   augroup Autocd 
-    autocmd VimEnter,BufEnter * if bufname('%') !~# 'NERD_tree' |
-\    execute('Autocd') |
-\   endif  
+    autocmd VimEnter,BufEnter * execute('Autocd')
   augroup END
 else
   let g:autocd#autocmd_enable = 0
-endif
-
-if !exists('g:autocd#markers_filetype_first') 
-  let g:autocd#markers_filetype_first = 1
 endif
 
 if !exists('*g:autocd#makers_get_default') 
@@ -38,12 +30,8 @@ if !exists('g:autocd#markers_default')
   let g:autocd#markers_default = 0
 endif
 
-if !exists('g:autocd#markers_filetype') 
-  let g:autocd#markers_filetype = { }
-endif
-
-if !exists('g:autocd#markers_path') 
-  let g:autocd#markers_path = { }
+if !exists('g:autocd#markers') 
+  let g:autocd#markers = { }
 endif
 
 if !exists('g:autocd#max_depth') 
@@ -61,6 +49,11 @@ endif
 if !exists('g:autocd#log_path')
   let g:autocd#log_path = $HOME
 endif
+
+if !exists('g:autocd#ignore')
+  let g:autocd#ignore = ['^term://']
+endif
+
 ""
 " Starts a recursive upward search from the current file to a marker in the dictionary of the
 " current file or default if none is provided. If there is a single tab change the cd to the result

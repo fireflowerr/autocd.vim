@@ -18,27 +18,26 @@ COMMANDS                                                 *autocd.vim-commands*
 ==============================================================================
 CONFIGURATION                                       *autocd.vim-configuration*
 
-g:autocd#markers_filetype                          *g:autocd#markers_filetype* 
-  A dictionary where the keys are a filetype corresponding to a set of markers
-  to search for.  >
-  
-    let g:autocd#markers_filetype = { 'java' : ['pom.xml] }
-
-g:autocd#markers_path                                  *g:autocd#markers_path*                    
+g:autocd#markers                                            *g:autocd#markers*                    
   A dictionary where the keys are a subpath to be matched agains the current
   file path. The values are a corresponding set of markers to search for.
   For instance if both VSC and Eclipse are installed, and both set to use  
   a folder within /home/user/Dev for their workspaces. The following value
   will cause Autocd to set the cwd to workspace root if you open a file in 
-  any of either Eclipse or VSC's workspaces. >
+  any of either Eclipse or VSC's workspaces.
+  note Globbing works here. >
 
-    let g:autocd#markers_path = { 
-    \ 'user/Dev': ['.vscode', '.project']
+    let g:autocd#markers = { 
+    \ '*/user/Dev/*': ['.vscode', '.project', '.git'],
+    \ '.*java': ['pom.xml'] 
     \}
 
-g:autocd#markers_filetype_first              *g:autocd#markers_filetype_first*
-  Default value 1. If disabled (set to 0) Autocd will search 
-  |g:autocd#markers_path| before searching |g:autocd#markers_path|.
+g:autocd#ignore                                              *g:autocd#ignore*
+  Defaulte value ['^term:\\'] (disabled). A list of buffer names to be
+  ignored by this plugin. Useful when autocmd is enabled.
+  note Terminals cannot be the cwd. If this value is overridden and :Autocd 
+  is executed on a terminal buffer, it will be unable to execute and an error
+  occurs.
 
 g:autocd#markers_default                            *g:autocd#markers_default*
   Default value 0. If enabled (set to 1) Autocd will change the directory to 
@@ -78,7 +77,7 @@ g:autocd#generate_log                                  *g:autocd#generate_log*
 
 g:autocd#log_path                                          *g:autocd#log_path*
   Default value $HOME. This value controls the path of the log output when 
-  |g:autocd#generate_log| is enabled.
+  |g:autocd#generate_log| is enabled. See |g:autocd#autocmd_enable|.
 
 ==============================================================================
 FUNCTIONS                                               *autocd.vim-functions*
