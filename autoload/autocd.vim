@@ -58,17 +58,18 @@ fun! s:get_path_val(dir)
 
     let l:dir_key = s:get_path_key(a:dir, l:skip)
     let s:log = s:log . 'dir_key: ' . l:dir_key . "\n"
-    if l:dir_key 
-        return 1
-    endif
 
-    let l:dir = s:search_marker_set(a:dir, g:autocd#markers[l:dir_key])  
+    if l:dir_key 
+      let l:dir = 1
+    else
+      let l:dir = s:search_marker_set(a:dir, g:autocd#markers[l:dir_key])
+    endif
+      
     if !l:dir
       return l:dir
     endif
     let l:skip += 1
   endwhile
-
 
   return 1
 endfun
@@ -80,6 +81,7 @@ fun! s:get_path_key(dir, skip)
 
   for path in l:sorted
     if l:skip_cnt < a:skip
+      let l:skip_cnt += 1
       continue
     endif
     if fnameescape(a:dir) =~# glob2regpat(path)
