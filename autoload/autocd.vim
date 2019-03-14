@@ -3,12 +3,13 @@
 " ####################################################################################################
 
 scriptencoding utf-8
-" nt_isopen, nt_isloaded, dir
-fun! autocd#autocd(dir)
 
   if !exists('s:cwd')
     let s:cwd = ''
   endif
+
+" nt_isopen, nt_isloaded, dir
+fun! autocd#autocd(dir)
 
   let l:newcwd = getcwd()
   if s:cwd !~# '^' . l:newcwd . '$'
