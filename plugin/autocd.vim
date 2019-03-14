@@ -55,7 +55,6 @@ endif
 
 if !(exists('g:autocd#loaded') && g:autocd#loaded)
   call autocd#load()
-  let g:autocd#loaded = 1
 endif
 
 ""
