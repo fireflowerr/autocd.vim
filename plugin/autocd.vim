@@ -6,7 +6,6 @@ scriptencoding utf-8
 
 " INIT
 if exists('g:autocd#nts_enable') && g:autocd#nts_enable
-  execute('NERDTree | NERDTreeClose')
   call autocd#nts_enable()
 else
   let g:autocd#nts_enable = 0
@@ -52,6 +51,10 @@ endif
 
 if !exists('g:autocd#ignore')
   let g:autocd#ignore = ['^term://']
+endif
+
+if !(exists('g:autocd#loaded') && g:autocd#loaded)
+  call autocd#load()
 endif
 
 ""
