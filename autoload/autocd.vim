@@ -4,9 +4,9 @@
 
 scriptencoding utf-8
 
-  if !exists('s:cwd')
-    let s:cwd = ''
-  endif
+fun! autocd#load()
+  let s:cwd = ''
+endfun
 
 " nt_isopen, nt_isloaded, dir
 fun! autocd#autocd(dir)
