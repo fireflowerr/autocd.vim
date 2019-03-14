@@ -6,7 +6,6 @@ scriptencoding utf-8
 
 " INIT
 if exists('g:autocd#nts_enable') && g:autocd#nts_enable
-  execute('NERDTree | NERDTreeClose')
   call autocd#nts_enable()
 else
   let g:autocd#nts_enable = 0
