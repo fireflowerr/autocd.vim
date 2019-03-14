@@ -3,23 +3,30 @@
 " ####################################################################################################
 
 scriptencoding utf-8
+
+fun! autocd#load()
+  let s:cwd = ''
+  let g:autocd#loaded = 1
+endfun
+
 " nt_isopen, nt_isloaded, dir
 fun! autocd#autocd(dir)
   call s:clear_log()
   if !s:buf_listed()
-    return 1
+    s:log = s:log . 'unlisted buff, no action required.' . "\n"
+    return 0
   endif
 
   for ignore in g:autocd#ignore
     if a:dir =~# ignore
-      return 1
+      return 0
     endif
   endfor
 
   let l:target_dir = s:search_markers(a:dir)
 
   let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
-\     'target_dir: ' . l:target_dir . "\n"
+  \     'target_dir: ' . l:target_dir . "\n"
 
   if !l:target_dir 
     call s:switch_dir(l:target_dir)
