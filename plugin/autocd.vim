@@ -57,6 +57,11 @@ if !(exists('g:autocd#loaded') && g:autocd#loaded)
   call autocd#load()
 endif
 
+if !exists('#User#Autocd_Switch')
+  autocmd User Autocd_Switch 
+endif
+
+
 ""
 " Starts a recursive upward search from the current file to a marker in the dictionary of the
 " current file or default if none is provided. If there is a single tab change the cd to the result
