@@ -30,9 +30,16 @@ fun! autocd#autocd(dir)
     endif
   endfor
 
+  let l:newcwd = getcwd()
+  if s:cwd =~# '^' . l:newcwd . '$'
+    let s:log = s:log . 'directory unchanged, no action required.' . "\n"
+    return 0
+  endif
+  let s:cwd = l:newcwd
+
   let l:target_dir = s:search_markers(a:dir)
 
-  let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
+  lET s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
   \     'target_dir: ' . l:target_dir . "\n"
 
   if !l:target_dir 
