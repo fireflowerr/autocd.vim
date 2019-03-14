@@ -39,7 +39,7 @@ fun! autocd#autocd(dir)
 
   let l:target_dir = s:search_markers(a:dir)
 
-  lET s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
+  let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
   \     'target_dir: ' . l:target_dir . "\n"
 
   if !l:target_dir 
