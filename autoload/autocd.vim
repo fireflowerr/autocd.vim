@@ -12,6 +12,12 @@ endfun
 " nt_isopen, nt_isloaded, dir
 fun! autocd#autocd(dir)
   call s:clear_log()
+
+  if !exists('g:autocd#loaded') || !g:autocd#loaded
+    let s:log = s:log . 'plugin not initialized.' . "\n"
+    return 1
+  endif
+
   if !s:buf_listed()
     let s:log = s:log . 'unlisted buff, no action required.' . "\n"
     return 0
@@ -19,6 +25,7 @@ fun! autocd#autocd(dir)
 
   for ignore in g:autocd#ignore
     if a:dir =~# ignore
+      let s:log = s:log . 'buffer ignored' . "\n"
       return 0
     endif
   endfor
