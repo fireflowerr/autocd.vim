@@ -147,6 +147,10 @@ fun! s:switch_dir(dir)
   else
     execute('lcd ' . a:dir)
   endif
+  
+  if exists('*g:Autocd_autocmd')
+    call g:Autocd_autocmd()
+  endif
 endfun
 
 " Sync NERDTree with directory change from this plugin's invocation
