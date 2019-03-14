@@ -13,7 +13,7 @@ endfun
 fun! autocd#autocd(dir)
   call s:clear_log()
   if !s:buf_listed()
-    s:log = s:log . 'unlisted buff, no action required.' . "\n"
+    let s:log = s:log . 'unlisted buff, no action required.' . "\n"
     return 0
   endif
 
