@@ -3,53 +3,32 @@
 " ####################################################################################################
 
 scriptencoding utf-8
-
-fun! autocd#load() 
-  let s:cwd = ''
-  let g:autocd#loaded = 1
-endfun
-
 " nt_isopen, nt_isloaded, dir
 fun! autocd#autocd(dir)
   call s:clear_log()
-  if !(exists('g:autocd#loaded') && g:autocd#loaded)
-    let s:log = s:log . 'no change detected'
-    return 0
+  if !s:buf_listed()
+    return 1
   endif
 
-  let l:newcwd = getcwd()
-  let s:log = s:log . 'oldcwd: ' . s:cwd . "\nnewcwd: " . l:newcwd . "\n"
-  if s:cwd !~# '^' . l:newcwd . '$'
-    let s:cwd = l:newcwd
-
-    if !s:buf_listed()
+  for ignore in g:autocd#ignore
+    if a:dir =~# ignore
       return 1
     endif
+  endfor
 
-    for ignore in g:autocd#ignore
-      if a:dir =~# ignore
-        return 1
-      endif
-    endfor
+  let l:target_dir = s:search_markers(a:dir)
 
-    let l:target_dir = s:search_markers(a:dir)
+  let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
+\     'target_dir: ' . l:target_dir . "\n"
 
-    let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
-    \     'target_dir: ' . l:target_dir . "\n"
+  if !l:target_dir 
+    call s:switch_dir(l:target_dir)
+    if s:nts
+      call s:NERDTree_sync() 
 
-    if !l:target_dir 
-      call s:switch_dir(l:target_dir)
-      if s:nts
-        call s:NERDTree_sync() 
-
-      endif 
-    endif
-
-    if exists('*g:Autocd_autocmd')
-      call g:Autocd_autocmd
-    endif
+    endif 
   endif
-    
+  
   if g:autocd#generate_log
     execute('redir >> ' . g:autocd#log_path . "/autocd.log | silent echo s:log | redir END ")
     let s:log = ''
@@ -153,11 +132,17 @@ endfun
 " Sync NERDTree with directory change from this plugin's invocation
 fun! s:NERDTree_sync()
   let l:winnr = winnr()
-  let l:nt_open = g:NERDTree.IsOpen()
+  let l:newcwd = getcwd()
+  let s:log = s:log . 'oldcwd: ' . s:cwd . "\nnewcwd: " . l:newcwd . "\n"
+  if s:cwd !~# '^' . l:newcwd . '$'
+    let s:cwd = l:newcwd
+    let l:nt_open = g:NERDTree.IsOpen()
 
-  execute('NERDTreeCWD')
-  if !l:nt_open
-    execute('NERDTreeClose')
+    execute('NERDTreeCWD')
+    if !l:nt_open
+      execute('NERDTreeClose')
+    endif
+
   endif
 
  execute(l:winnr . 'wincmd w') 
@@ -167,6 +152,7 @@ endfun
 fun! autocd#nts_enable()
   call s:clear_log()
   if exists('g:NERDTree')
+    let s:cwd = ''  
     let s:nts = 1
     call s:NERDTree_sync()
   else
