@@ -37,13 +37,11 @@ fun! autocd#autocd(dir)
 
   if !l:target_dir 
 
-    let l:newcwd = getcwd()
     if s:cwd =~# '^' . l:target_dir . '$'
       let s:log = s:log . 'directory unchanged, no action required.' . "\n"
       return 0
     endif
 
-  let s:cwd = l:newcwd
     call s:switch_dir(l:target_dir)
     if s:nts
       call s:NERDTree_sync() 
