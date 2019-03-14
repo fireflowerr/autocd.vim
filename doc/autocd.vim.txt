@@ -6,6 +6,7 @@ CONTENTS                                                 *autocd.vim-contents*
   1. Commands............................................|autocd.vim-commands|
   2. Configuration..................................|autocd.vim-configuration|
   3. Functions..........................................|autocd.vim-functions|
+  4. Events................................................|autocd.vim-events|
 ==============================================================================
 COMMANDS                                                 *autocd.vim-commands*
 
@@ -88,8 +89,11 @@ autocd#nts_enable()                                      *autocd#nts_enable()*
 autocd#nts_disable()                                    *autocd#nts_disable()*
   Calling this function disables NerdTree synchronization. 
 
-Autocd_autocmd                                            *g:Autocd_autocmd()*
-  This function is left to be overriden by the user. By default it does
-  nothing, it is called whenever a directory change is triggered by the
-  |:Autocd| command.
-  
+==============================================================================
+EVENTS                                                     *autocd.vim-events*
+
+Autocd_Switch                                                  *Autocd_Switch*
+  This User event is created everytime a directory change is triggered by the
+  |:Autocmd| command. Eample:   >
+
+    autocmd! User Autocd_Switch call MyFunction() 
