@@ -10,6 +10,9 @@ endfun
 
 " nt_isopen, nt_isloaded, dir
 fun! autocd#autocd(dir)
+  if !(exists('g:autocd#loaded') && g:autocd#loaded)
+    return 1
+  endif
 
   let l:newcwd = getcwd()
   if s:cwd !~# '^' . l:newcwd . '$'
@@ -42,10 +45,10 @@ fun! autocd#autocd(dir)
       call g:Autocd_autocmd
     endfun
     
-    if g:autocd#generate_log
-      execute('redir >> ' . g:autocd#log_path . "/autocd.log | silent echo s:log | redir END ")
-      let s:log = ''
-    endif
+  endif
+  if g:autocd#generate_log
+    execute('redir >> ' . g:autocd#log_path . "/autocd.log | silent echo s:log | redir end ")
+    let s:log = ''
   endif
 endfun
 
