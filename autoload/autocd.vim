@@ -30,19 +30,20 @@ fun! autocd#autocd(dir)
     endif
   endfor
 
-  let l:newcwd = getcwd()
-  if s:cwd =~# '^' . l:newcwd . '$'
-    let s:log = s:log . 'directory unchanged, no action required.' . "\n"
-    return 0
-  endif
-  let s:cwd = l:newcwd
-
   let l:target_dir = s:search_markers(a:dir)
 
   let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
   \     'target_dir: ' . l:target_dir . "\n"
 
   if !l:target_dir 
+
+    let l:newcwd = getcwd()
+    if s:cwd =~# '^' . l:target_dir . '$'
+      let s:log = s:log . 'directory unchanged, no action required.' . "\n"
+      return 0
+    endif
+
+  let s:cwd = l:newcwd
     call s:switch_dir(l:target_dir)
     if s:nts
       call s:NERDTree_sync() 
@@ -153,17 +154,11 @@ endfun
 " Sync NERDTree with directory change from this plugin's invocation
 fun! s:NERDTree_sync()
   let l:winnr = winnr()
-  let l:newcwd = getcwd()
-  let s:log = s:log . 'oldcwd: ' . s:cwd . "\nnewcwd: " . l:newcwd . "\n"
-  if s:cwd !~# '^' . l:newcwd . '$'
-    let s:cwd = l:newcwd
-    let l:nt_open = g:NERDTree.IsOpen()
+  let l:nt_open = g:NERDTree.IsOpen()
 
-    execute('NERDTreeCWD')
-    if !l:nt_open
-      execute('NERDTreeClose')
-    endif
-
+  execute('NERDTreeCWD')
+  if !l:nt_open
+    execute('NERDTreeClose')
   endif
 
  execute(l:winnr . 'wincmd w') 
@@ -173,7 +168,6 @@ endfun
 fun! autocd#nts_enable()
   call s:clear_log()
   if exists('g:NERDTree')
-    let s:cwd = ''  
     let s:nts = 1
     call s:NERDTree_sync()
   else
