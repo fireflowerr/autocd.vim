@@ -44,6 +44,7 @@ fun! autocd#autocd(dir)
     if exists('*g:Autocd_autocmd')
       call g:Autocd_autocmd
     endif
+  endif
 
   if g:autocd#generate_log
     execute('redir >> ' . g:autocd#log_path . "/autocd.log | silent echo s:log | redir end ")
