@@ -4,11 +4,6 @@
 
 scriptencoding utf-8
 
-if !(exists('g:autocd#loaded') && g:autocd#loaded)
-  call autocd#load()
-  let g:autocd#loaded = 1
-endif
-
 " INIT
 if exists('g:autocd#nts_enable') && g:autocd#nts_enable
   call autocd#nts_enable()
@@ -56,6 +51,11 @@ endif
 
 if !exists('g:autocd#ignore')
   let g:autocd#ignore = ['^term://']
+endif
+
+if !(exists('g:autocd#loaded') && g:autocd#loaded)
+  call autocd#load()
+  let g:autocd#loaded = 1
 endif
 
 ""

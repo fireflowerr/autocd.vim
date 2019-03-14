@@ -28,7 +28,7 @@ fun! autocd#autocd(dir)
     let l:target_dir = s:search_markers(a:dir)
 
     let s:log = s:log . 'path: ' . expand(a:dir) . "\n" .
-  \     'target_dir: ' . l:target_dir . "\n"
+    \     'target_dir: ' . l:target_dir . "\n"
 
     if !l:target_dir 
       call s:switch_dir(l:target_dir)
@@ -146,7 +146,6 @@ endfun
 " Sync NERDTree with directory change from this plugin's invocation
 fun! s:NERDTree_sync()
   let l:winnr = winnr()
-  let s:log = s:log . 'oldcwd: ' . s:cwd . "\nnewcwd: " . l:newcwd . "\n"
   let l:nt_open = g:NERDTree.IsOpen()
 
   execute('NERDTreeCWD')
