@@ -10,7 +10,7 @@ endfun
 
 " nt_isopen, nt_isloaded, dir
 fun! autocd#autocd(dir)
-  if !(exists('g:autocd#loaded') && g:autocd#loaded)
+  if exists('g:autocd#loaded') && g:autocd#loaded
     return 1
   endif
 
