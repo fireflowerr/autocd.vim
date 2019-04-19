@@ -12,6 +12,7 @@ utilize getcwd() as a reliable current project directory.
 * NERDTree integration. Keep NERDTree in sync with the output of this command.
 
 ## Installation
+TEST
 
 Use the plugin manager of your choice to install. Example using [dein](https://github.com/Shougo/dein.vim). If using NERDTree integration and vim-devicons, this plugin must be sourced after vim-devicons to prevent conflict.
 
@@ -26,7 +27,7 @@ call dein#add('paroxayte/autocd.vim')
 Autocd works by processing various triggers each associated with a mark. When a trigger goes off,
 autocd searches up the directory heiarchy looking for a specified marker. For instance if creating a
 java project with maven there will be a pom.xml in the project root. To automatically change to the
-root of a maven java project with :Autocd 
+root of a maven java project with :Autocd
 
 ```vim
 let g:autocd#markers = {
@@ -37,15 +38,15 @@ let g:autocd#markers = {
 To automatically cd to project root of vscode, eclipse, or git projects.
 
 ```vim
-let g:autocd#markers = { 
+let g:autocd#markers = {
 \   '*user/Dev*': ['.project', '.vscode', '.git']
 \}
 ```
-To create special rules for a specific file, the file's full path can be used with 
+To create special rules for a specific file, the file's full path can be used with
 `g:autocd#markers`.
 
 ```vim
-let g:autocd#markers = { 
+let g:autocd#markers = {
 \   '/path/to/file': ['some_marker']
 \}
 ```
@@ -70,13 +71,13 @@ The sole command of Autocd is `:Autocd`. To run `:Autocd` automatically on BufEn
 let g:autocd#nts_enable = 1
 let g:autocd#autocmd_enable = 1
 let g:autocd#markers_default = 1
-let g:autocd#markers = { 
+let g:autocd#markers = {
 \   '*.java' : ['pom.xml'],
 \   '*/user/Dev/*': ['.project', '.vscode', '.git'],
 \}
 ```
 
-## More Information 
+## More Information
 For more information see `:help autocd.vim`
 
 ## Issues
