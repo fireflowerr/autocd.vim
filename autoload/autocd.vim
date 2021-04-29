@@ -142,14 +142,16 @@ endfun
 
 " Switch dir
 fun! s:switch_dir(dir) 
-  if tabpagenr('$') == 1 || !g:autocd#tab_isolation
-    execute('cd ' . a:dir)
-  else
-    execute('lcd ' . a:dir)
-  endif
-  
-  if exists('*g:Autocd_autocmd')
-    call g:Autocd_autocmd()
+  if isdirectory(a:dir)
+    if tabpagenr('$') == 1 || !g:autocd#tab_isolation
+      execute('cd ' . a:dir)
+    else
+      execute('lcd ' . a:dir)
+    endif
+    
+    if exists('*g:Autocd_autocmd')
+      call g:Autocd_autocmd()
+    endif
   endif
 endfun
 
